@@ -26,7 +26,7 @@ ACombatProjectileBase::ACombatProjectileBase()
 
 	ProjectileCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("ProjectileCollisionBox"));
 	SetRootComponent(ProjectileCollisionBox);
-	ProjectileCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ProjectileCollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	ProjectileCollisionBox->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	ProjectileCollisionBox->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 	ProjectileCollisionBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
@@ -67,7 +67,8 @@ void ACombatProjectileBase::BeginPlay()
 			GetRootComponent(),
 			FName(),
 			FVector::ZeroVector,
-			EAttachLocation::KeepRelativeOffset
+			EAttachLocation::KeepRelativeOffset,
+			true
 		);
 	}
 
@@ -98,6 +99,7 @@ void ACombatProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, A
 	// For Enemy
 	PlayProjectileHitFX(Hit);
 
+	// Check if hit APawn
 	APawn* HitPawn = Cast<APawn>(OtherActor);
 
 	if (!HitPawn || !UCombatFunctionLibrary::IsTargetPawnHostile(GetInstigator(), HitPawn))
