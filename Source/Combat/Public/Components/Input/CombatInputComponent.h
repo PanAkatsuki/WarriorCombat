@@ -19,27 +19,27 @@ class COMBAT_API UCombatInputComponent : public UEnhancedInputComponent
 
 public:
 	// BindNativeInputAction() should set TriggerEvent for all UInputAction
-	template<class UserObject, typename CallbackFunc>
-	void BindNativeInputAction(const UDataAsset_InputConfig* InInputConfig, const FGameplayTag& InInputTag, ETriggerEvent TriggerEvent, UserObject* ContextObject, CallbackFunc Func);
+	template<class UserObject, typename CallbackFunction>
+	void BindNativeInputAction(const UDataAsset_InputConfig* InInputConfig, const FGameplayTag& InInputTag, ETriggerEvent InTriggerEvent, UserObject* InContextObject, CallbackFunction InCallbackFunction);
 	
 	// Ability only have two TriggerEvent, for this BindAbilityInputAction() can bind all Ability in ONE function
-	template<class UserObject, typename CallbackFunc>
-	void BindAbilityInputAction(const UDataAsset_InputConfig* InInputConfig, UserObject* ContextObject, CallbackFunc InputPressedFunc, CallbackFunc InputReleasedFunc);
+	template<class UserObject, typename CallbackFunction>
+	void BindAbilityInputAction(const UDataAsset_InputConfig* InInputConfig, UserObject* InContextObject, CallbackFunction InInputPressedFunction, CallbackFunction InInputReleasedFunction);
 };
 
-template<class UserObject, typename CallbackFunc>
-inline void UCombatInputComponent::BindNativeInputAction(const UDataAsset_InputConfig* InInputConfig, const FGameplayTag& InInputTag, ETriggerEvent TriggerEvent, UserObject* ContextObject, CallbackFunc Func)
+template<class UserObject, typename CallbackFunction>
+inline void UCombatInputComponent::BindNativeInputAction(const UDataAsset_InputConfig* InInputConfig, const FGameplayTag& InInputTag, ETriggerEvent InTriggerEvent, UserObject* InContextObject, CallbackFunction InCallbackFunction)
 {
 	checkf(InInputConfig, TEXT("InInputConfig is null, should set in editor!"));
 
 	if (UInputAction* FoundAction = InInputConfig->FindNativeInputActionByTag(InInputTag))
 	{
-		BindAction(FoundAction, TriggerEvent, ContextObject, Func);
+		BindAction(FoundAction, InTriggerEvent, InContextObject, InCallbackFunction);
 	}
 }
 
-template<class UserObject, typename CallbackFunc>
-inline void UCombatInputComponent::BindAbilityInputAction(const UDataAsset_InputConfig* InInputConfig, UserObject* ContextObject, CallbackFunc InputPressedFunc, CallbackFunc InputReleasedFunc)
+template<class UserObject, typename CallbackFunction>
+inline void UCombatInputComponent::BindAbilityInputAction(const UDataAsset_InputConfig* InInputConfig, UserObject* InContextObject, CallbackFunction InInputPressedFunction, CallbackFunction InInputReleasedFunction)
 {
 	checkf(InInputConfig, TEXT("InInputConfig is null, should set in editor!."));
 
@@ -50,7 +50,7 @@ inline void UCombatInputComponent::BindAbilityInputAction(const UDataAsset_Input
 			continue;
 		}
 
-		BindAction(AbilityInputActionConfig.InputAction, ETriggerEvent::Started, ContextObject, InputPressedFunc, AbilityInputActionConfig.InputTag);
-		BindAction(AbilityInputActionConfig.InputAction, ETriggerEvent::Completed, ContextObject, InputReleasedFunc, AbilityInputActionConfig.InputTag);
+		BindAction(AbilityInputActionConfig.InputAction, ETriggerEvent::Started, InContextObject, InInputPressedFunction, AbilityInputActionConfig.InputTag);
+		BindAction(AbilityInputActionConfig.InputAction, ETriggerEvent::Completed, InContextObject, InInputReleasedFunction, AbilityInputActionConfig.InputTag);
 	}
 }
