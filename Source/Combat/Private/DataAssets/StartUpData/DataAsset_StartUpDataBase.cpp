@@ -22,7 +22,6 @@ void UDataAsset_StartUpDataBase::GrantAbilities(const TArray<TSubclassOf<UCombat
 		}
 
 		FGameplayAbilitySpec AbilitySpec(AbilityClass, ApplyLevel, -1, InASCToGive->GetAvatarActor());
-
 		InASCToGive->GiveAbility(AbilitySpec);
 	}
 }
@@ -42,7 +41,6 @@ void UDataAsset_StartUpDataBase::GrantEffects(const TArray<TSubclassOf<UGameplay
 		}
 
 		UGameplayEffect* EffectCDO = EffectClass->GetDefaultObject<UGameplayEffect>();// EffectCDO -> Effect Class Default object
-
 		InASCToGive->ApplyGameplayEffectToSelf(EffectCDO, ApplyLevel, InASCToGive->MakeEffectContext());
 	}
 }

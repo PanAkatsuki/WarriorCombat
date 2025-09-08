@@ -33,7 +33,7 @@ private:
 	FGameplayTag WeaponTagToRigister;
 
 	UPROPERTY(EditDefaultsOnly, Category = "SpawnWeapon")
-	bool bRegisterAsEquippedWeapon;
+	bool bRegisterAsEquippedWeapon = false;
 
 protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;

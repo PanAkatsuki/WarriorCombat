@@ -49,8 +49,6 @@ ACombatWeaponBase* USharedAbility_SpawnWeapon::SpawnWeapon(TSubclassOf<ACombatWe
 	return SpawnedWeapon;
 }
 
-
-
 void USharedAbility_SpawnWeapon::RegisterWeapon(ACombatWeaponBase* InWeapon, FGameplayTag InWeaponTagToRigister, bool InbRegisterAsEquippedWeapon)
 {
 	GetPawnFightComponentFromActorInfo()->RegisterSpawnedWeapon(InWeaponTagToRigister, InWeapon, InbRegisterAsEquippedWeapon);

@@ -81,12 +81,6 @@ public:
 
 	TWeakObjectPtr<ACombatEnemyCharacter> TargetInEnemyCharacter;
 
-private:
-	void InitHeroStartUpData();
-
-	/*void StartAiming();
-	void StopAiming();*/
-
 #pragma region Inputs
 
 	void Input_Move(const FInputActionValue& InputActionValue);

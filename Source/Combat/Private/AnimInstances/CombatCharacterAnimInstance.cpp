@@ -14,6 +14,7 @@ void UCombatCharacterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
+	//This function will be called in editor, so here should not use CastCheck.
 	OwningCharacter = Cast<ACombatBaseCharacter>(TryGetPawnOwner());
 
 	if (OwningCharacter)
@@ -22,7 +23,7 @@ void UCombatCharacterAnimInstance::NativeInitializeAnimation()
 	}
 	else
 	{
-		Debug::Print(TEXT("In UCombatCharacterAnimInstance::NativeInitializeAnimation, OwningCharacter cast failed!"));
+		//Debug::Print(TEXT("In UCombatCharacterAnimInstance::NativeInitializeAnimation, OwningCharacter cast failed!"));
 	}
 }
 
@@ -32,7 +33,8 @@ void UCombatCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSe
 
 	if (!OwningCharacter || !OwningMovementComponent)
 	{
-		Debug::Print(TEXT("In UCombatCharacterAnimInstance::NativeThreadSafeUpdateAnimation, OwningCharacter or OwningMovementComponent is null!"));
+		//This function will be called in editor.
+		//Debug::Print(TEXT("In UCombatCharacterAnimInstance::NativeThreadSafeUpdateAnimation, OwningCharacter or OwningMovementComponent is null!"));
 		return;
 	}
 

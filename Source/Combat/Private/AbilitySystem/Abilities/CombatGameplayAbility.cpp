@@ -97,6 +97,7 @@ void UCombatGameplayAbility::OnEventReceived(FGameplayEventData InEventData)
 
 UPawnFightComponent* UCombatGameplayAbility::GetPawnFightComponentFromActorInfo() const
 {
+	// Find component by interate. If actor has multiply UPawnFightComponent this function will NOT work correctly.
 	UPawnFightComponent* PawnFightComponent = GetAvatarActorFromActorInfo()->FindComponentByClass<UPawnFightComponent>();
 	check(PawnFightComponent);
 

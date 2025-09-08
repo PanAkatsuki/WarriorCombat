@@ -32,11 +32,11 @@ void ACombatBaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
+	ensureMsgf(!CharacterStartUpData.IsNull(), TEXT("Forget to assign start up data to %s"), *this->GetName());
+
 	if (CombatAbilitySystemComponent)
 	{
 		CombatAbilitySystemComponent->InitAbilityActorInfo(this, this);
-
-		ensureMsgf(!CharacterStartUpData.IsNull(), TEXT("Forget to assign start up data to %s"), *this->GetName());
 	}
 }
 
@@ -50,11 +50,6 @@ UAbilitySystemComponent* ACombatBaseCharacter::GetAbilitySystemComponent() const
 {
 	return Cast<UAbilitySystemComponent>(GetCombatAbilitySystemComponent());
 }
-
-//UPawnFightComponent* ACombatBaseCharacter::GetPawnFightComponent() const
-//{
-//	return nullptr;
-//}
 
 UPawnUIComponent* ACombatBaseCharacter::GetPawnUIComponent() const
 {

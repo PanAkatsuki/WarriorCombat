@@ -75,42 +75,7 @@ void ACombatHeroCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	InitHeroStartUpData();
-}
-
-void ACombatHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	checkf(InputConfigDataAsset, TEXT("InputConfigDataAsset is null, should set it in editor!"));
-
-	ULocalPlayer* LocalPlayer = GetController<APlayerController>()->GetLocalPlayer();
-
-	UEnhancedInputLocalPlayerSubsystem* EnhancedInputLocalPlayerSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
-
-	check(EnhancedInputLocalPlayerSubsystem);
-
-	// AddMappingContext to EnhancedInputLocalPlayerSubsystem
-	EnhancedInputLocalPlayerSubsystem->AddMappingContext(InputConfigDataAsset->DefaultInputMappingContext, 0);
-
-	UCombatInputComponent* CombatInputComponent = CastChecked<UCombatInputComponent>(PlayerInputComponent);
-
-	// BindNativeInputAction
-	CombatInputComponent->BindNativeInputAction(InputConfigDataAsset, CombatGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
-
-	CombatInputComponent->BindNativeInputAction(InputConfigDataAsset, CombatGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
-
-	CombatInputComponent->BindNativeInputAction(InputConfigDataAsset, CombatGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
-	CombatInputComponent->BindNativeInputAction(InputConfigDataAsset, CombatGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
-
-	CombatInputComponent->BindNativeInputAction(InputConfigDataAsset, CombatGameplayTags::InputTag_PickUp_Stones, ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
-
-	// BindAbilityInputAction
-	CombatInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
-}
-
-void ACombatHeroCharacter::InitHeroStartUpData()
-{
+	// Initialize hero startup data
 	if (CharacterStartUpData.IsNull())
 	{
 		return;
@@ -150,6 +115,34 @@ void ACombatHeroCharacter::InitHeroStartUpData()
 	}
 }
 
+void ACombatHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	checkf(InputConfigDataAsset, TEXT("InputConfigDataAsset is null, should set it in editor!"));
+
+	ULocalPlayer* LocalPlayer = GetController<APlayerController>()->GetLocalPlayer();
+	UEnhancedInputLocalPlayerSubsystem* EnhancedInputLocalPlayerSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
+	check(EnhancedInputLocalPlayerSubsystem);
+
+	// AddMappingContext to EnhancedInputLocalPlayerSubsystem
+	EnhancedInputLocalPlayerSubsystem->AddMappingContext(InputConfigDataAsset->DefaultInputMappingContext, 0);
+
+	// BindNativeInputAction
+	UCombatInputComponent* CombatInputComponent = CastChecked<UCombatInputComponent>(PlayerInputComponent);
+
+	CombatInputComponent->BindNativeInputAction(InputConfigDataAsset, CombatGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
+	CombatInputComponent->BindNativeInputAction(InputConfigDataAsset, CombatGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+
+	CombatInputComponent->BindNativeInputAction(InputConfigDataAsset, CombatGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
+	CombatInputComponent->BindNativeInputAction(InputConfigDataAsset, CombatGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
+
+	CombatInputComponent->BindNativeInputAction(InputConfigDataAsset, CombatGameplayTags::InputTag_PickUp_Stones, ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
+
+	// BindAbilityInputAction
+	CombatInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
+}
+
 void ACombatHeroCharacter::Input_Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
@@ -158,14 +151,12 @@ void ACombatHeroCharacter::Input_Move(const FInputActionValue& InputActionValue)
 	if (MovementVector.Y != 0.f)
 	{
 		const FVector ForwardDirection = MovementRotation.RotateVector(FVector::ForwardVector);
-
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 	}
 
 	if (MovementVector.X != 0.f)
 	{
 		const FVector RightDirection = MovementRotation.RotateVector(FVector::RightVector);
-
 		AddMovementInput(RightDirection, MovementVector.X);
 	}
 }

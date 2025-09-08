@@ -21,6 +21,7 @@ public:
 	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
 
 protected:
+	// This parameter should change for there is a ptr for owning character in parent class. But animation will use this parameter, should change it later.
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|References")
 	ACombatHeroCharacter* OwningHeroCharacter;
 
