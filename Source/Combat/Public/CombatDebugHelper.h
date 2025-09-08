@@ -20,4 +20,4 @@ namespace Debug
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *Msg);
 		}
 	}
-}
+} 
