@@ -64,6 +64,7 @@ void UHeroAbility_Roll::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
+	UCombatFunctionLibrary::RemoveGameplayTagFromActorIfFound(GetHeroCharacterFromActorInfo(), CombatGameplayTags::Shared_Status_Invincible);
 }
 
 void UHeroAbility_Roll::OnDelayFinished()
